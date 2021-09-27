@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+  serverId: artifactory_eu
+  snapshotRepo: libs-snapshot
+  releaseRepo: libs-release
+deployer:
+  serverId: artifactory_eu
+  snapshotRepo: libs-snapshot-local
+  releaseRepo: libs-release-local

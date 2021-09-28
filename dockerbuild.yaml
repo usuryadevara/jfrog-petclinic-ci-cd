@@ -6,7 +6,7 @@ metadata:
     label: docker
 spec:
   containers:
-  - name: dockerbuild
+  - name: docker
     image: jenkins/jnlp-agent-docker
     command:
     - cat

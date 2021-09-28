@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker-jnlp
+  labels:
+    label: docker
+spec:
+  containers:
+  - name: dockerbuild
+    image: jenkins/jnlp-agent-docker
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - mountPath: '/var/run/docker.sock'
+      name: docker-socket
+  - name: kubectl
+    image: bitnami/kubectl
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: docker-socket
+    hostPath:
+      path: '/var/run/docker.sock'
+  securityContext:
+    runAsUser: 0

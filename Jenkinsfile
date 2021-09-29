@@ -21,7 +21,7 @@ pipeline {
                 rtServer (
                     id: "devsecopsunicloud",
                     url: "https://devsecopsunicloud.jfrog.io/artifactory",
-                    credentialsId: "jfrogadmin"
+                    credentialsId: "artifactory-access-token"
                 )
                 }
             }
@@ -40,30 +40,29 @@ pipeline {
  
         stage ('Push Image to Artifactory') {
             steps {
-                container('docker') {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'jfrogadmin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                    sh """
-                    mkdir ~/.docker/ && touch ~/.docker/config.json
-                    cat << EOF > ~/.docker/config.json
-                    {
-                        "auths": {
-                            "https://devsecopsunicloud.jfrog.io": {
-                                "auth": ${env.PASSWORD},
-                                "email": "${env.USERNAME}"
-                            }
-                        }
-                    }
-                    EOF
-                    sleep 6000
-                    """
+                // container('docker') {
+//                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'jfrogadmin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+//                     sh """
+//                     mkdir ~/.docker/ && touch ~/.docker/config.json
+//                     cat <<-EOF > ~/.docker/config.json
+// {
+//     "auths": {
+//         "https://devsecopsunicloud.jfrog.io": {
+//             "auth": "${env.PASSWORD}",
+//             "email": "${env.USERNAME}"
+//         }
+//     }
+// }
+// EOF
+//                     """
                 rtDockerPush(
                     serverId: "devsecopsunicloud",
                     image: "devsecopsunicloud.jfrog.io/" + "pet-clinic:1.0.${env.BUILD_NUMBER}",
-                    targetRepo: 'docker',
+                    targetRepo: 'docker-local',
                     properties: 'project-name=jfrog-blog-post;status=stable'
                 )
-                }
-                }
+                // }
+                // }
             }
         }
  

@@ -10,7 +10,7 @@ pipeline {
         stage ('Clone') {
             steps {
                 container('docker') {
-                git branch: 'master', url: "https://github.com/usuryadevara/jfrog-petclinic-ci-cd.git"
+                git branch: 'to_remove', url: "https://github.com/usuryadevara/jfrog-petclinic-ci-cd.git"
                 }            
             }
         }

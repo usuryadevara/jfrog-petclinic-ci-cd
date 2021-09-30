@@ -122,7 +122,7 @@ pipeline {
                 container('docker') {
                  withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'jfrogadmin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                    sh """
-                    helm repo add helm https://devsecopsunicloud.jfrog.io/artifactory/helm-helm --username ${env.USERNAME} --password ${env.PASSWORD}
+                    helm repo add helm https://devsecopsunicloud.jfrog.io/artifactory/devsecops-helm --username ${env.USERNAME} --password ${env.PASSWORD}
                     helm repo update
                    """
                  }
@@ -136,7 +136,7 @@ pipeline {
                  withCredentials([kubeconfigContent(credentialsId: 'k8s-cluster-kubeconfig', variable: 'KUBECONFIG_CONTENT')]) {
                     sh """
                      echo "$KUBECONFIG_CONTENT" > config && cp config ~/.kube/config
-                     helm upgrade --install spring-petclinic-ci-cd-k8s-example helm/spring-petclinic-ci-cd-k8s-chart --kube-context=gke_dev_us-west1-a_artifactory --set=image.tag=1.0.${env.BUILD_NUMBER}
+                     helm upgrade --install spring-petclinic-ci-cd-k8s-example helm/spring-petclinic-ci-cd-k8s-chart --kube-context=docker-desktop --set=image.tag=1.0.${env.BUILD_NUMBER}
                     """
                  }
                 }
